@@ -1,0 +1,70 @@
+data: 
+  train_dir:  /ssd_scratch/cvit/rishabh.s/Finetune_data/TRAIN
+  val_dir:    /ssd_scratch/cvit/rishabh.s/Finetune_data/VAL
+  test_dir:   /ssd_scratch/cvit/rishabh.s/Finetune_data/TEST
+  # test_dir: ../OtherAdsDatasets/Adrianna
+  # test_dir: ../OtherAdsDatasets/PersuasiveStrategies
+  # test_dir: ../OtherAdsDatasets/Imp1k
+  # test_dir: ../OtherAdsDatasets/ADD1000Chinese
+  # test_dir: ../FinalAds_NonAds/TEST
+  ads: /ssd_scratch/cvit/rishabh.s/Filtered_ads/ads
+  non_ads: /ssd_scratch/cvit/rishabh.s/Filtered_ads/non_ads
+  augment: False
+
+model: 
+  feat_extractor: vit
+  batch_size: 32
+  train_bs: 32 
+  valid_bs: 32
+  epochs: 20
+  checkpoint: /home2/rishabh.s/ADS_NON_ADS_Classifier/model/best_combined.pth.tar
+
+arch: 
+  vit: 
+    class: vit_with_cls_head
+    args: 
+      pretrained: 'google/vit-base-patch16-224-in21k'
+      feature_dim: 768
+      num_classes: 2
+      dropout_prob: 0.4
+      is_trainable: True
+    
+  
+  convnext: 
+    class: convnext_with_cls_head
+    args: 
+      pretrained: facebook/convnext-base-224-22k
+      feature_dim: 1024
+      num_classes: 2
+      dropout_prob: 0.3
+      is_trainable: True
+    
+  blipv2:
+    class: blipv2_with_cls_head
+    args: 
+      pretrained: "blip2_feature_extractor"
+      feature_dim: 768
+      num_classes: 2
+      dropout_prob: 0.3
+      is_trainable: True
+
+lr: 
+  feat_ext_lr: 0.00001
+  base_lr : 0.001
+  T_0: 150
+  eta_min: 0.00001
+
+
+ckpt: 
+  ckpt_frequency: 1
+  ckpt_folder: /ssd_scratch/cvit/rishabh.s/checkpoints
+
+wandb: 
+  wandb_log: True
+  sweep: False
+  sweep_runs: 9
+  sweep_id: rishabhsri14/ADS_NON_ADS_Classifier_with_blipv2/oxncmp5n
+  project: FineTune_newspaper_ads
+  entity: rishabhsri14
+  run_name: finetune
+

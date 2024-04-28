@@ -1,0 +1,14 @@
+program: finetune.py
+method: grid
+metric:
+  name: f1/val
+  goal: maximize
+parameters:
+  dropout_prob:
+    values: [0.3, 0.4, 0.5]
+  feat_ext_lr:
+    values: [0.00001, 0.0001]
+  base_lr:
+    values: [0.01, 0.001, 0.0001]
+  T_0:
+    values: [100, 150, 200]

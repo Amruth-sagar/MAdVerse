@@ -1,0 +1,63 @@
+data: 
+  train_dir:  /scratch/rishabh.s/three_class_ad_source_classification/dataset/TRAIN
+  val_dir:    /scratch/rishabh.s/three_class_ad_source_classification/dataset/VAL
+  test_dir:  /scratch/rishabh.s/three_class_ad_source_classification/dataset/TEST
+  augment: False
+
+model: 
+  feat_extractor: vit
+  batch_size: 32
+  train_bs: 32 
+  valid_bs: 32
+  epochs: 20
+  heatmap_path: /scratch/rishabh.s/three_class_ad_source_classification/heatmaps/Vit/
+  checkpoint: /home2/rishabh.s/ADS_NON_ADS_Classifier/model/best_combined.pth.tar
+
+arch: 
+  vit: 
+    class: vit_with_cls_head
+    args: 
+      pretrained: 'google/vit-base-patch16-224-in21k'
+      feature_dim: 768
+      num_classes: 3
+      dropout_prob: 0.4
+      is_trainable: True
+    
+  convnext: 
+    class: convnext_with_cls_head
+    args: 
+      pretrained: facebook/convnext-base-224-22k
+      feature_dim: 1024
+      num_classes: 3
+      dropout_prob: 0.3
+      is_trainable: True
+    
+  blipv2:
+    class: blipv2_with_cls_head
+    args: 
+      pretrained: "blip2_feature_extractor"
+      feature_dim: 768
+      num_classes: 3
+      dropout_prob: 0.3
+      is_trainable: True
+
+lr: 
+  feat_ext_lr: 0.0001
+  base_lr : 0.001
+  T_0: 150
+  eta_min: 0.00001
+
+
+ckpt: 
+  ckpt_frequency: 1
+  ckpt_folder: /scratch/rishabh.s/three_class_ad_source_classification/checkpoints
+
+wandb: 
+  wandb_log: False
+  sweep: False
+  sweep_runs: 9
+  sweep_id: rishabhsri14/ADS_NON_ADS_Classifier_with_blipv2/oxncmp5n
+  project: AD_source_prediction
+  entity: rishabhsri14
+  run_name: Vit_three_class
+
